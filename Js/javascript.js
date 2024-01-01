@@ -1,5 +1,7 @@
 const form = document.getElementById('form-deposito');
-const nomeBenefeciario = document.getElementById('nome-beneficiario');
+const saldoConta = document.getElementById('saldo-conta');
+const valorSaque = document.getElementById('valor-saque');
+const nomeBeneficiario = document.getElementById('nome-beneficiario');
 let formEValido = false;
 
 function validarNome(nomeCompleto) {
@@ -7,42 +9,58 @@ function validarNome(nomeCompleto) {
   return nomeComoArray.length >= 2;
 }
 
+function validarSaque(saldo, saque) {
+  return parseFloat(saldo) >= parseFloat(saque);
+}
 
-form.addEventListener('submit', function(e){
+form.addEventListener('submit', function(e) {
   e.preventDefault();
- 
-  
-  const numeroContaBeneficiario = document.getElementById('numero-conta');
-  const valorDeposito = document.getElementById('valor-deposito');
-  const mensagemSucesso = `Montante de: <b>${valorDeposito.value}</b> depositou para o cliente <b>${nomeBenefeciario.value}</b> - conta: <b>${numeroContaBeneficiario.value}</b>;`
 
-  formEValido = validarNome(nomeBenefeciario.value);
-  
-  if (formEValido){
+  const mensagemSucesso = `Saque de: <b>${valorSaque.value}</b> realizado com sucesso. Saldo atual: <b>${saldoConta.value - valorSaque.value}</b>;`;
+
+  formEValido = validarNome(nomeBeneficiario.value);
+  const saqueValido = validarSaque(saldoConta.value, valorSaque.value);
+
+  if (formEValido && saqueValido) {
     const conteinerMensagemSucesso = document.querySelector('.success-message');
-     conteinerMensagemSucesso.innerHTML = mensagemSucesso;
-     conteinerMensagemSucesso.style.display = 'block';
-     
-     
-     nomeBenefeciario.value = '';
-     numeroContaBeneficiario.value = '';
-     valorDeposito.value = '';
+    conteinerMensagemSucesso.innerHTML = mensagemSucesso;
+    conteinerMensagemSucesso.style.display = 'block';
+
+    saldoConta.value = '';
+    valorSaque.value = '';
+    nomeBeneficiario.value = '';
   } else {
-    nomeBenefeciario.style.border = '1px solid red'
-    document.querySelector('.error-message').style.display = 'block'
+    if (!formEValido) {
+      nomeBeneficiario.classList.add('error');
+    } else {
+      nomeBeneficiario.classList.remove('error');
+    }
+
+    saldoConta.classList.add('error');
+    document.querySelector('.error-message').style.display = 'block';
   }
-  
-})
-nomeBenefeciario.addEventListener('keyup', function (e) {
-  console.log(e.target.value);
-  formEValido = validarNome(e.target.value);
-  
-  if (!formEValido){
-    nomeBenefeciario.classList.add('error')
-   // nomeBenefeciario.style.border = '1px solid red'
+});
+
+nomeBeneficiario.addEventListener('keyup', function(e) {
+  formEValido = validarNome(nomeBeneficiario.value);
+
+  if (!formEValido) {
+    nomeBeneficiario.classList.add('error');
     document.querySelector('.error-message').style.display = 'block';
   } else {
-    nomeBenefeciario.classList.remove('error');
+    nomeBeneficiario.classList.remove('error');
     document.querySelector('.error-message').style.display = 'none';
   }
-})
+});
+
+saldoConta.addEventListener('keyup', function(e) {
+  formEValido = validarNome(nomeBeneficiario.value);
+
+  if (!formEValido) {
+    nomeBeneficiario.classList.add('error');
+  } else {
+    nomeBeneficiario.classList.remove('error');
+  }
+
+  document.querySelector('.error-message').style.display = 'none';
+});
