@@ -1,48 +1,62 @@
-const form = document.getElementById('form-deposito');
-const nomeBenefeciario = document.getElementById('nome-beneficiario');
-let formEValido = false;
+const form = document.getElementById('form-saque');
+const saldoContaInput = document.getElementById('saldo-conta-input');
+const valorSaqueInput = document.getElementById('valor-saque-input');
+const nomeBeneficiarioInput = document.getElementById('nome-beneficiario-input');
+let formularioValido = false;
 
 function validarNome(nomeCompleto) {
   const nomeComoArray = nomeCompleto.split(' ');
   return nomeComoArray.length >= 2;
 }
 
+function validarSaque(saldo, saque) {
+  return parseFloat(saldo) >= parseFloat(saque);
+}
 
-form.addEventListener('submit', function(e){
+form.addEventListener('submit', function(e) {
   e.preventDefault();
- 
-  
-  const numeroContaBeneficiario = document.getElementById('numero-conta');
-  const valorDeposito = document.getElementById('valor-deposito');
-  const mensagemSucesso = `Montante de: <b>${valorDeposito.value}</b> depositou para o cliente <b>${nomeBenefeciario.value}</b> - conta: <b>${numeroContaBeneficiario.value}</b>;`
 
-  formEValido = validarNome(nomeBenefeciario.value);
-  
-  if (formEValido){
-    const conteinerMensagemSucesso = document.querySelector('.success-message');
-     conteinerMensagemSucesso.innerHTML = mensagemSucesso;
-     conteinerMensagemSucesso.style.display = 'block';
-     
-     
-     nomeBenefeciario.value = '';
-     numeroContaBeneficiario.value = '';
-     valorDeposito.value = '';
+  const mensagemSucesso = `Saque de: <b>${valorSaqueInput.value}</b> realizado com sucesso. Saldo atual: <b>${saldoContaInput.value - valorSaqueInput.value}</b>;`;
+
+  formularioValido = validarNome(nomeBeneficiarioInput.value);
+  const saqueValido = validarSaque(saldoContaInput.value, valorSaqueInput.value);
+
+  if (formularioValido && saqueValido) {
+    const mensagemSucessoContainer = document.querySelector('.success-message');
+    mensagemSucessoContainer.innerHTML = mensagemSucesso;
+    mensagemSucessoContainer.style.display = 'block';
+
+    saldoContaInput.value = '';
+    valorSaqueInput.value = '';
+    nomeBeneficiarioInput.value = '';
   } else {
-    nomeBenefeciario.style.border = '1px solid red'
-    document.querySelector('.error-message').style.display = 'block'
+    if (!formularioValido) {
+      nomeBeneficiarioInput.classList.add('error');
+    } else {
+      nomeBeneficiarioInput.classList.remove('error');
+    }
+
+    saldoContaInput.classList.add('error');
+    document.querySelector('.error-message').style.display = 'block';
   }
-  
-})
-nomeBenefeciario.addEventListener('keyup', function (e) {
-  console.log(e.target.value);
-  formEValido = validarNome(e.target.value);
-  
-  if (!formEValido){
-    nomeBenefeciario.classList.add('error')
-   // nomeBenefeciario.style.border = '1px solid red'
+});
+
+nomeBeneficiarioInput.addEventListener('keyup', function(e) {
+  formularioValido = validarNome(nomeBeneficiarioInput.value);
+
+  if (!formularioValido) {
+    nomeBeneficiarioInput.classList.add('error');
     document.querySelector('.error-message').style.display = 'block';
   } else {
-    nomeBenefeciario.classList.remove('error');
+    nomeBeneficiarioInput.classList.remove('error');
     document.querySelector('.error-message').style.display = 'none';
   }
-})
+});
+
+valorSaqueInput.addEventListener('input', function(e) {
+  valorSaqueInput.value = formatarNumero(valorSaqueInput.value);
+});
+
+saldoContaInput.addEventListener('input', function(e) {
+  saldoContaInput.value = formatarNumero(saldoContaInput.value);
+});
