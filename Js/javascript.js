@@ -46,11 +46,12 @@ form.addEventListener('submit', function(e) {
       valorSaqueInput.classList.add('error');
       saldoMessage.style.display = 'block';
     } else {
-      valorSaqueInput.classList.remove('error');
+      
       saldoMensage.textContent = '';
       saldoMessage.style.display = 'none';
     }
   }
+  return;
 });
 
 nomeBeneficiarioInput.addEventListener('keyup', function(e) {
@@ -67,6 +68,7 @@ nomeBeneficiarioInput.addEventListener('keyup', function(e) {
 
 valorSaqueInput.addEventListener('keyup', function(e) {
   saldoInsuficienteMessage.style.display = 'none'; 
+  valorSaqueInput.classList.remove('error');
 });
 
 saldoContaInput.addEventListener('keyup', function(e) {
