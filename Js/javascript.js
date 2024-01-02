@@ -51,7 +51,6 @@ form.addEventListener('submit', function(e) {
       saldoMessage.style.display = 'none';
     }
   }
-  return;
 });
 
 nomeBeneficiarioInput.addEventListener('keyup', function(e) {
@@ -73,4 +72,5 @@ valorSaqueInput.addEventListener('keyup', function(e) {
 
 saldoContaInput.addEventListener('keyup', function(e) {
   saldoInsuficienteMessage.style.display = 'none';
+  valorSaqueInput.classList.remove('error');
 });
