@@ -2,6 +2,7 @@ const form = document.getElementById('form-saque');
 const saldoContaInput = document.getElementById('saldo-conta-input');
 const valorSaqueInput = document.getElementById('valor-saque-input');
 const nomeBeneficiarioInput = document.getElementById('nome-beneficiario-input');
+const saldoInsuficienteMessage = document.querySelector('.saldo-insuficiente-message');
 let formularioValido = false;
 
 function validarNome(nomeCompleto) {
@@ -32,12 +33,23 @@ form.addEventListener('submit', function(e) {
   } else {
     if (!formularioValido) {
       nomeBeneficiarioInput.classList.add('error');
+      document.querySelector('.error-message').style.display = 'block';
     } else {
       nomeBeneficiarioInput.classList.remove('error');
     }
 
-    saldoContaInput.classList.add('error');
-    document.querySelector('.error-message').style.display = 'block';
+    // Mensagem de Texto Saldo
+    const saldoMessage = document.querySelector('.saldo-insuficiente-message');
+
+    if (saldoContaInput.value < valorSaqueInput.value) {
+      saldoInsuficienteMessage.innerHTML = 'Saldo insuficiente. Por favor, insira um valor menor.';
+      valorSaqueInput.classList.add('error');
+      saldoMessage.style.display = 'block';
+    } else {
+      valorSaqueInput.classList.remove('error');
+      saldoMensage.textContent = '';
+      saldoMessage.style.display = 'none';
+    }
   }
 });
 
@@ -53,10 +65,10 @@ nomeBeneficiarioInput.addEventListener('keyup', function(e) {
   }
 });
 
-valorSaqueInput.addEventListener('input', function(e) {
-  valorSaqueInput.value = formatarNumero(valorSaqueInput.value);
+valorSaqueInput.addEventListener('keyup', function(e) {
+  saldoInsuficienteMessage.style.display = 'none'; 
 });
 
-saldoContaInput.addEventListener('input', function(e) {
-  saldoContaInput.value = formatarNumero(saldoContaInput.value);
+saldoContaInput.addEventListener('keyup', function(e) {
+  saldoInsuficienteMessage.style.display = 'none';
 });
