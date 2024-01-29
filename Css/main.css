@@ -58,3 +58,9 @@ input.error{
   border-color: red;
   outline-style: red;
 }
+.saldo-insuficiente-message{
+  display: none;
+  color: red;
+  margin-bottom: 8px;
+  font-size: 14px
+}

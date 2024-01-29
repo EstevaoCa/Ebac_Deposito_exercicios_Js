@@ -14,9 +14,10 @@
         <form id="form-saque">
             <input type="text" id="nome-beneficiario-input" required placeholder="Nome completo do beneficiário" />
             <p class="error-message">
-              O nome precisa ser completo
+              Digite o Nome Completo
             </p>
             <input type="number" id="saldo-conta-input" required placeholder="Saldo da conta" />
+            <p class="saldo-insuficiente-message"></p>
             <input type="number" id="valor-saque-input" required placeholder="Valor do saque" />
             <textarea id="descricao" placeholder="Descrição (opcional)"></textarea>
             <button id="btn-sacar" type="submit">Sacar</button>
